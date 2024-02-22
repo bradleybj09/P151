@@ -19,7 +19,7 @@ interface PokemonDetail {
     val sprite: String
     val color: PokeColor
     val relatedPokemon: List<PokemonSummary>
-    val evolvesFrom: PokemonSummary
+    val evolvesFrom: PokemonSummary?
     val flavorText: Map<PokeVersion, String>
     val habitat: String
     val isLegendary: Boolean

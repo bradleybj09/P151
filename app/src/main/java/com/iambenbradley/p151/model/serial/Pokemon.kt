@@ -11,6 +11,7 @@ data class PokemonSummary(
 
 @Serializable
 data class PokemonDetail(
+    val id: Long,
     val name: String,
     val species: SpeciesReference,
     val sprites: Sprites,
@@ -27,19 +28,19 @@ data class SpeciesReference(
 data class SpeciesDetail(
     val color: SerialColor,
     @SerialName("evolution_chain")
-    val evolutionChain: EvolutionChain,
+    val evolutionChain: EvolutionChainReference,
     @SerialName("evolves_from_species")
     val evolvesFromSpecies: SpeciesReference?,
     @SerialName("flavor_text_entries")
     val flavorTextEntries: List<FlavorText>,
     val habitat: String,
-    val legendary: Boolean,
+    val isLegendary: Boolean,
 )
 
 @Serializable
 data class FlavorText(
     val text: String,
-    val version: SerialVersion
+    val version: SerialVersion,
 )
 
 @Serializable
@@ -52,6 +53,11 @@ data class SerialVersion(
 data class Sprites(
     @SerialName("front_default")
     val frontDefault: String,
+)
+
+@Serializable
+data class EvolutionChainReference(
+    val url: String,
 )
 
 @Serializable

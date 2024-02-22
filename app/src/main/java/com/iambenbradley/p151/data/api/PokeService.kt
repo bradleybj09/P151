@@ -12,6 +12,7 @@ import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -20,16 +21,16 @@ import javax.inject.Singleton
 interface PokeService {
 
     @GET("/pokemon?limit=151")
-    suspend fun getAllOneFiftyOne(): Result<List<PokemonSummary>>
+    suspend fun getAllOneFiftyOne(): Response<List<PokemonSummary>>
 
     @GET("/pokemon/{id}/")
-    suspend fun getPokemon(@Path("id") pokemonId: Long): Result<PokemonDetail>
+    suspend fun getPokemon(@Path("id") pokemonId: Long): Response<PokemonDetail>
 
     @GET("/pokemon-species/{id}/")
-    suspend fun getSpecies(@Path("id") pokemonId: Long): Result<SpeciesDetail>
+    suspend fun getSpecies(@Path("id") pokemonId: Long): Response<SpeciesDetail>
 
     @GET("/evolution0chain/{id}/")
-    suspend fun getEvolutionChain(@Path("id") evolutionChainId: Long): Result<EvolutionChain>
+    suspend fun getEvolutionChain(@Path("id") evolutionChainId: Long): Response<EvolutionChain>
 }
 
 @Module
