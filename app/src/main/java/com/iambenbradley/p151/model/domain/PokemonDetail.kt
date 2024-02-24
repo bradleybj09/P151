@@ -23,4 +23,5 @@ interface PokemonDetail {
     val flavorText: Map<PokeVersion, String>
     val habitat: String
     val isLegendary: Boolean
+    val types: Set<Type>
 }

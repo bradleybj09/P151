@@ -1,5 +1,6 @@
 package com.iambenbradley.p151.data.api
 
+import com.iambenbradley.p151.model.serial.AllPokemonResult
 import com.iambenbradley.p151.model.serial.EvolutionChain
 import com.iambenbradley.p151.model.serial.PokemonDetail
 import com.iambenbradley.p151.model.serial.PokemonSummary
@@ -20,16 +21,16 @@ import javax.inject.Singleton
 
 interface PokeService {
 
-    @GET("/pokemon?limit=151")
-    suspend fun getAllOneFiftyOne(): Response<List<PokemonSummary>>
+    @GET("pokemon?limit=151")
+    suspend fun getAllOneFiftyOne(): Response<AllPokemonResult>
 
-    @GET("/pokemon/{id}/")
+    @GET("pokemon/{id}/")
     suspend fun getPokemon(@Path("id") pokemonId: Long): Response<PokemonDetail>
 
-    @GET("/pokemon-species/{id}/")
+    @GET("pokemon-species/{id}/")
     suspend fun getSpecies(@Path("id") pokemonId: Long): Response<SpeciesDetail>
 
-    @GET("/evolution0chain/{id}/")
+    @GET("evolution0chain/{id}/")
     suspend fun getEvolutionChain(@Path("id") evolutionChainId: Long): Response<EvolutionChain>
 }
 
@@ -41,7 +42,7 @@ class PokeServiceProviderModule {
     @Suppress("JSON_FORMAT_REDUNDANT")
     @Provides
     @Singleton
-    fun provideRetrofit() = Retrofit.Builder()
+    fun provideRetrofit(): Retrofit = Retrofit.Builder()
         .baseUrl("https://pokeapi.co/api/v2/")
         .addConverterFactory(
             Json {
@@ -49,6 +50,7 @@ class PokeServiceProviderModule {
                 isLenient = true
             }.asConverterFactory("application/json".toMediaType()),
         )
+        .build()
 
     @Provides
     @Singleton

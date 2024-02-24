@@ -9,12 +9,12 @@ plugins {
 
 android {
     namespace = "com.iambenbradley.p151"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.iambenbradley.p151"
         minSdk = 23
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -44,7 +44,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.3"
+        kotlinCompilerExtensionVersion = "1.5.2"
     }
     packaging {
         resources {
@@ -58,9 +58,9 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
 
     implementation(libs.hilt.android)
-    implementation(libs.hilt.compiler)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlinx.coroutines)
+    ksp(libs.hilt.compiler)
 
     implementation(libs.okhttp3)
     implementation(libs.retrofit.core)

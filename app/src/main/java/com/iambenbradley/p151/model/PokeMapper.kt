@@ -27,13 +27,16 @@ class PokeMapper @Inject constructor() {
 
     fun serialToDomainType(serial: SerialType): Type {
         return Type.values().firstOrNull { type ->
-            type.serialName == serial.name
+            type.serialName == serial.type.name
         } ?: Type.Unknown
     }
 
     fun serialToDomainSummary(serial: SerialSummary): PokemonSummary {
         return PokemonSummaryImpl(
-            id = serial.url.substringBeforeLast('/').toLongOrNull() ?: 0,
+            id = serial.url
+                .substringBeforeLast('/')
+                .substringAfterLast('/')
+                .toLongOrNull() ?: 0,
             name = serial.name,
         )
     }
@@ -51,8 +54,9 @@ class PokeMapper @Inject constructor() {
             relatedPokemon = getRelatedPokemonFromChain(evolutionChain),
             evolvesFrom = speciesReferenceToPokemonSummary(species.evolvesFromSpecies),
             flavorText = getFlavorTextFromSpecies(species.flavorTextEntries),
-            habitat = species.habitat,
-            isLegendary = species.isLegendary
+            habitat = species.habitat.name,
+            isLegendary = species.isLegendary,
+            types = pokemon.types.map { serialToDomainType(it) }.toSet()
         )
     }
 

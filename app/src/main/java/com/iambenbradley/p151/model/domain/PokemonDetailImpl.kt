@@ -10,4 +10,5 @@ data class PokemonDetailImpl(
     override val flavorText: Map<PokeVersion, String>,
     override val habitat: String,
     override val isLegendary: Boolean,
+    override val types: Set<Type>,
 ) : PokemonSummary, PokemonDetail

@@ -8,6 +8,7 @@ import androidx.datastore.preferences.preferencesDataStoreFile
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -17,7 +18,9 @@ class SharedPrefsProviderModule {
 
     @Provides
     @Singleton
-    fun provideDataStore(context: Context): DataStore<Preferences> {
+    fun provideDataStore(
+        @ApplicationContext context: Context
+    ): DataStore<Preferences> {
         return PreferenceDataStoreFactory.create {
             context.preferencesDataStoreFile("global")
         }

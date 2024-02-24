@@ -4,6 +4,12 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
+data class AllPokemonResult(
+    val count: Int,
+    val results: List<PokemonSummary>,
+)
+
+@Serializable
 data class PokemonSummary(
     val name: String,
     val url: String,
@@ -33,12 +39,19 @@ data class SpeciesDetail(
     val evolvesFromSpecies: SpeciesReference?,
     @SerialName("flavor_text_entries")
     val flavorTextEntries: List<FlavorText>,
-    val habitat: String,
+    val habitat: Habitat,
+    @SerialName("is_legendary")
     val isLegendary: Boolean,
 )
 
 @Serializable
+data class Habitat(
+    val name: String,
+)
+
+@Serializable
 data class FlavorText(
+    @SerialName("flavor_text")
     val text: String,
     val version: SerialVersion,
 )
@@ -75,6 +88,11 @@ data class SerialColor(
 
 @Serializable
 data class SerialType(
+    val type: SerialInnerType,
+)
+
+@Serializable
+data class SerialInnerType(
     val name: String,
     val url: String,
 )
