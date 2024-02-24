@@ -63,6 +63,7 @@ dependencies {
     implementation(libs.okhttp3)
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.kotlinx.serialization)
+    implementation(libs.androidx.datastore)
 
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
