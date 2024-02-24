@@ -55,6 +55,8 @@ android {
 
 dependencies {
 
+    implementation(libs.hilt.navigation.compose)
+
     implementation(libs.hilt.android)
     implementation(libs.hilt.compiler)
     implementation(libs.kotlinx.serialization.json)

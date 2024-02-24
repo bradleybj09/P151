@@ -4,9 +4,23 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
+import dagger.Binds
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
+import javax.inject.Singleton
+
+@Module
+@InstallIn(SingletonComponent::class)
+interface UserPreferencesBindingModule {
+
+    @Binds
+    @Singleton
+    fun bindUserPreferencesRepository(impl: DataStoreUserPreferencesRepository): UserPreferencesRepository
+}
 
 interface UserPreferencesRepository {
     fun <T> observe(key: Preferences.Key<T>): Flow<T?>
