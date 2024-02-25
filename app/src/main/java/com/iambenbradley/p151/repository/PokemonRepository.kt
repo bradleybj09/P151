@@ -30,8 +30,20 @@ interface PokemonRepositoryBindingModule {
 }
 
 interface PokemonRepository {
+
+    /**
+     * Call to update flow of all pokemon with a list of the original 151
+     */
     suspend fun updateSummaries()
+
+    /**
+     * Flow of simple results for original 151 pokemon, stays hot
+     */
     val pokemonSummaries: Flow<PokemonSummaryResult>
+
+    /**
+     * Call to receive a more complicated payload for an individual pokemon
+     */
     fun getPokemonDetail(id: Long): Flow<PokemonDetailResult>
 }
 

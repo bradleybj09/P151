@@ -12,6 +12,7 @@ package com.iambenbradley.p151.model.domain
  * on the version where that description was seen
  * @property habitat a simple string to describe the habitat of the pokemon
  * @property isLegendary true if this is a Legendary pokemon
+ * @property types a set of the types of the pokemon (e.g. fire, fighting, ghost, etc.)
  */
 interface PokemonDetail {
     val id: Long
