@@ -30,7 +30,7 @@ interface PokeService {
     @GET("pokemon-species/{id}/")
     suspend fun getSpecies(@Path("id") pokemonId: Long): Response<SpeciesDetail>
 
-    @GET("evolution0chain/{id}/")
+    @GET("evolution-chain/{id}/")
     suspend fun getEvolutionChain(@Path("id") evolutionChainId: Long): Response<EvolutionChain>
 }
 

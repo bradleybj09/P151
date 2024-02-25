@@ -8,6 +8,7 @@ import com.iambenbradley.p151.model.result.PokemonSummaryResult
 import com.iambenbradley.p151.util.ApplicationProcessScope
 import com.iambenbradley.p151.util.DefaultDispatcher
 import com.iambenbradley.p151.util.IoDispatcher
+import com.iambenbradley.p151.util.getPokemonId
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -58,7 +59,6 @@ class PokemonRepositoryImpl @Inject constructor(
         coroutineScope.launch(ioDispatcher) {
             _summaries.emit(
                 pokeService.getAllOneFiftyOne().let { response ->
-                    Log.wtf("bbradley", "$response")
                     if (response.isSuccessful) {
                         // in such a small thing, it's silly to switch dispatchers here, but in a real
                         // complex situation with big mapping jobs, you'd do it. So I did it here.
@@ -81,35 +81,41 @@ class PokemonRepositoryImpl @Inject constructor(
     override val pokemonSummaries: Flow<PokemonSummaryResult> = _summaries
 
     override fun getPokemonDetail(id: Long): Flow<PokemonDetailResult> = flow {
-        val pokemon = pokeService.getPokemon(pokemonId = id)
-            .takeUnless { !it.isSuccessful }
-            ?.body()
-            ?: run {
+        val pokemon = pokeService.getPokemon(pokemonId = id).let { response ->
+            if (response.isSuccessful) {
+                response.body()!!
+            } else {
                 emit(PokemonDetailResult.Failure)
                 return@flow
             }
+        }
 
-        val species = pokeService.getSpecies(pokemonId = id)
-            .takeUnless { !it.isSuccessful }
-            ?.body()
-            ?: run {
+        val species = pokeService.getSpecies(pokemonId = id).let { response ->
+            if (response.isSuccessful) {
+                response.body()!!
+            } else {
                 emit(PokemonDetailResult.Failure)
                 return@flow
             }
+        }
 
         val evolutionChain = species
             .evolutionChain
-            .url
-            .substringBeforeLast('/')
-            .toLongOrNull()
+            .url.getPokemonId()
             ?.let { evolutionChainId ->
-                pokeService.getEvolutionChain(evolutionChainId = evolutionChainId)
-            }?.takeUnless { !it.isSuccessful }
-            ?.body()
-            ?: run {
-                emit(PokemonDetailResult.Failure)
-                return@flow
-            }
+                pokeService.getEvolutionChain(evolutionChainId = evolutionChainId).let { response ->
+                    if (response.isSuccessful) {
+                        response.body()!!
+                    } else {
+                        emit(PokemonDetailResult.Failure)
+                        return@flow
+                    }
+                }
+            } ?: run {
+            emit(PokemonDetailResult.Failure)
+            return@flow
+        }
+
         val pokeData = pokeMapper.constructPokeData(
             pokemon = pokemon,
             species = species,

@@ -36,7 +36,9 @@ fun DetailScreen(
             PokemonDetailResult.Failure -> FailureScreen(text = "We had trouble catching this " +
                 "pokemon. Please check your internet or try again later.")
             PokemonDetailResult.Loading -> LoadingScreen()
-            is PokemonDetailResult.Success -> Text(text = "hooray", modifier = modifier.weight(1f), textAlign = TextAlign.Center)
+            is PokemonDetailResult.Success -> {
+                Text(text = "hooray", modifier = modifier.weight(1f), textAlign = TextAlign.Center)
+            }
         }
     }
 

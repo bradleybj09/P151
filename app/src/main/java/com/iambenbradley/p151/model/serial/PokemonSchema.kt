@@ -75,7 +75,13 @@ data class EvolutionChainReference(
 
 @Serializable
 data class EvolutionChain(
-    val evolvesTo: List<EvolutionChain>,
+    val chain: EvolutionChainInnerData,
+)
+
+@Serializable
+data class EvolutionChainInnerData(
+    @SerialName("evolves_to")
+    val evolvesTo: List<EvolutionChainInnerData>? = null,
     val species: SpeciesReference,
 )
 
