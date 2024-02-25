@@ -3,40 +3,59 @@ package com.iambenbradley.p151.ui.common
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import com.iambenbradley.p151.model.domain.PokemonSummary
+import androidx.compose.ui.unit.dp
+import com.iambenbradley.p151.R
 
 @Composable
 fun PokemonSummaryCard(
-    pokemon: PokemonSummary,
-    onClick: (Long) -> Unit,
+    name: String,
+    id: Long,
+    onClick: (Long, String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Card(
+        shape = RoundedCornerShape(4.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White
+        ),
         modifier = modifier
-            .clickable { onClick(pokemon.id) }
+            .clickable { onClick(id, name) }
     ) {
-        Row {
+        Row(
+            modifier = Modifier.padding(4.dp)
+        ) {
             Image(
-                imageVector = Icons.Default.AddCircle,
+                painter = painterResource(id = R.drawable.pokeball),
                 contentDescription = "pokeball",
-                modifier = Modifier.weight(1f)
+                modifier = Modifier
+                    .weight(1f)
+                    .size(48.dp)
             )
             Text(
-                text = pokemon.id.toString().padStart(3, '0'),
+                text = id.toString().padStart(3, '0'),
                 textAlign = TextAlign.Start,
-                modifier = Modifier.weight(1f)
+                modifier = Modifier
+                    .weight(1f)
+                    .align(CenterVertically)
             )
             Text(
-                text = pokemon.name,
+                text = name.uppercase(),
                 textAlign = TextAlign.Start,
-                modifier = Modifier.weight(2f)
+                modifier = Modifier
+                    .weight(2f)
+                    .align(CenterVertically)
             )
         }
     }

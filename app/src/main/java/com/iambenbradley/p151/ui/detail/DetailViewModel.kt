@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.iambenbradley.p151.main.pokemonIdArg
+import com.iambenbradley.p151.main.pokemonNameArg
 import com.iambenbradley.p151.model.result.PokemonDetailResult
 import com.iambenbradley.p151.repository.PokemonRepository
 import com.iambenbradley.p151.util.DefaultDispatcher
@@ -26,7 +27,8 @@ class DetailViewModel @Inject constructor(
     @DefaultDispatcher defaultDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
-    private val pokemonId = savedStateHandle.getStateFlow<Long?>(pokemonIdArg, null)
+    val pokemonId = savedStateHandle.getStateFlow<Long?>(pokemonIdArg, null)
+    val pokemonName = savedStateHandle.getStateFlow<String?>(pokemonNameArg, null)
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val currentPokemon: StateFlow<PokemonDetailResult> = pokemonId.flatMapLatest { id ->

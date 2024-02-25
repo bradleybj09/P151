@@ -10,10 +10,12 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import com.iambenbradley.p151.model.domain.PokeVersion
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
@@ -37,21 +39,76 @@ private val LightColorScheme = lightColorScheme(
     */
 )
 
+private val RedColorScheme = lightColorScheme(
+    primary = Red,
+    secondary = DarkRed,
+    tertiary = LightRed,
+)
+
+private val BlueColorScheme = lightColorScheme(
+    primary = Blue,
+    secondary = DarkBlue,
+    tertiary = LightBlue,
+)
+
+private val YellowColorScheme = lightColorScheme(
+    primary = Yellow,
+    secondary = DarkYellow,
+    tertiary = LightYellow,
+)
+
+private val OtherColorScheme = lightColorScheme(
+    primary = Color.Gray,
+    secondary = Color.DarkGray,
+    tertiary = Color.LightGray,
+)
+
+private val RedColorSchemeDark = darkColorScheme(
+    primary = Red,
+    secondary = DarkRed,
+    tertiary = LightRed,
+)
+
+private val BlueColorSchemeDark = darkColorScheme(
+    primary = Blue,
+    secondary = DarkBlue,
+    tertiary = LightBlue,
+)
+
+private val YellowColorSchemeDark = darkColorScheme(
+    primary = Yellow,
+    secondary = DarkYellow,
+    tertiary = LightYellow,
+)
+
+private val OtherColorSchemeDark = darkColorScheme(
+    primary = Color.Gray,
+    secondary = Color.DarkGray,
+    tertiary = Color.LightGray,
+)
+
+
 @Composable
 fun P151Theme(
+    colorTheme: PokeVersion,
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+    val colorScheme = when (darkTheme) {
+        true -> when (colorTheme) {
+            PokeVersion.Red -> RedColorSchemeDark
+            PokeVersion.Blue -> BlueColorSchemeDark
+            PokeVersion.Yellow -> YellowColorSchemeDark
+            PokeVersion.Other -> OtherColorSchemeDark
         }
-
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
+        false -> when (colorTheme) {
+            PokeVersion.Red -> RedColorScheme
+            PokeVersion.Blue -> BlueColorScheme
+            PokeVersion.Yellow -> YellowColorScheme
+            PokeVersion.Other -> OtherColorScheme
+        }
     }
     val view = LocalView.current
     if (!view.isInEditMode) {
