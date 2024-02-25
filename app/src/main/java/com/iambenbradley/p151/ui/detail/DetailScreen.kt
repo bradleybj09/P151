@@ -50,9 +50,8 @@ fun DetailScreen(
     onRelatedPokemonClick: (Long, String) -> Unit,
     onBackButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
+    viewModel: DetailViewModel = hiltViewModel(),
 ) {
-    val viewModel: DetailViewModel = hiltViewModel()
-
     val pokemonState by viewModel.currentPokemon.collectAsState()
     val pokemonName by viewModel.pokemonName.collectAsState()
     val pokemonId by viewModel.pokemonId.collectAsState()

@@ -55,7 +55,7 @@ class PokeMapper @Inject constructor() {
             color = serialToDomainColor(species.color),
             relatedPokemon = getRelatedPokemonFromChain(evolutionChain.chain).filter {
                 it.id != pokemon.id && it.id <= 151 // I'm looking at you, Eevee gen2 evolutions
-            },
+            }.reversed(),
             evolvesFrom = speciesReferenceToPokemonSummary(species.evolvesFromSpecies),
             flavorText = getFlavorTextFromSpecies(species.flavorTextEntries),
             habitat = species.habitat?.name,

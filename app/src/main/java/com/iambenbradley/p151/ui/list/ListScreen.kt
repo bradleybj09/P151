@@ -23,8 +23,8 @@ import com.iambenbradley.p151.util.toBackgroundColor
 fun ListScreen(
     onClickPokemon: (Long, String) -> Unit,
     modifier: Modifier = Modifier,
+    viewModel: ListViewModel = hiltViewModel(),
 ) {
-    val viewModel: ListViewModel = hiltViewModel()
     val backgroundColor = LocalUserTypePreference.current.toBackgroundColor()
 
     val pokemonState by viewModel.pokemon.collectAsState()
