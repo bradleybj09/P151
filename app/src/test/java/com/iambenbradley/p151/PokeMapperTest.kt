@@ -212,8 +212,8 @@ class PokeMapperTest {
             sprite = "homeSprite",
             color = PokeColor.Red,
             relatedPokemon = listOf(
-                PokemonSummaryImpl(2, "2"),
                 PokemonSummaryImpl(3, "3"),
+                PokemonSummaryImpl(2, "2"),
             ),
             evolvesFrom = PokemonSummaryImpl(2, "2"),
             flavorText = mapOf(

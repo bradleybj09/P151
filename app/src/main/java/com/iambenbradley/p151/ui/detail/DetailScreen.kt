@@ -117,6 +117,13 @@ fun PokemonDetails(
                     .size(150.dp)
                     .align(Alignment.CenterHorizontally)
             )
+            if (pokemon.id in listOf(138L, 139L)) {
+                Text(
+                    text = "Praise Helix!",
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
             AlignedDescriptor(
                 startText = "Type: ",
                 endText = pokemon.types.joinToString(" + "),

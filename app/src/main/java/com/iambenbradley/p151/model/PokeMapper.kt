@@ -56,7 +56,8 @@ class PokeMapper @Inject constructor() {
             relatedPokemon = getRelatedPokemonFromChain(evolutionChain.chain).filter {
                 it.id != pokemon.id && it.id <= 151 // I'm looking at you, Eevee gen2 evolutions
             }.reversed(),
-            evolvesFrom = speciesReferenceToPokemonSummary(species.evolvesFromSpecies),
+            evolvesFrom = speciesReferenceToPokemonSummary(species.evolvesFromSpecies)
+                ?.takeUnless { it.id > 151 }, // Jynx...
             flavorText = getFlavorTextFromSpecies(species.flavorTextEntries),
             habitat = species.habitat?.name,
             isLegendary = species.isLegendary,
@@ -68,8 +69,6 @@ class PokeMapper @Inject constructor() {
     fun getRelatedPokemonFromChain(
         evolutionChain: EvolutionChainInnerData,
     ): List<PokemonSummary> {
-        // and there I was, telling people "I am never going to write a recursive function in
-        // an android app"
         val evolvesTo = evolutionChain.evolvesTo
         val thisPokemon = speciesReferenceToPokemonSummary(evolutionChain.species)
         val others = evolvesTo?.flatMap { chain ->
