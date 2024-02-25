@@ -4,12 +4,14 @@ import app.cash.turbine.test
 import com.iambenbradley.p151.data.api.PokeService
 import com.iambenbradley.p151.model.PokeMapper
 import com.iambenbradley.p151.model.domain.PokemonDetail as DomainPokemonDetail
+import com.iambenbradley.p151.model.domain.PokemonSummary as DomainPokemonSummary
 import com.iambenbradley.p151.model.result.PokemonDetailResult
 import com.iambenbradley.p151.model.result.PokemonSummaryResult
 import com.iambenbradley.p151.model.serial.AllPokemonResult
 import com.iambenbradley.p151.model.serial.EvolutionChain
 import com.iambenbradley.p151.model.serial.EvolutionChainReference
 import com.iambenbradley.p151.model.serial.PokemonDetail
+import com.iambenbradley.p151.model.serial.PokemonSummary
 import com.iambenbradley.p151.model.serial.SpeciesDetail
 import com.iambenbradley.p151.repository.PokemonRepository
 import com.iambenbradley.p151.repository.PokemonRepositoryImpl
@@ -54,6 +56,12 @@ class PokemonRepositoryTest {
     @MockK
     private lateinit var domainPokemonDetail: DomainPokemonDetail
 
+    @MockK
+    private lateinit var aPokemon: PokemonSummary
+
+    @MockK
+    private lateinit var aDomainPokemon: DomainPokemonSummary
+
     private val responseErrorBody = "{\"thing\":[\"bad\"]}"
         .toResponseBody("application/json".toMediaTypeOrNull())
 
@@ -68,6 +76,7 @@ class PokemonRepositoryTest {
             defaultDispatcher = testDispatcher,
             ioDispatcher = testDispatcher,
         )
+        coEvery { pokeMapper.serialToDomainSummary(any()) } returns(aDomainPokemon)
         coEvery { species.evolutionChain } returns(evoChainReference)
         coEvery { evoChainReference.url } returns("/0/")
     }
@@ -75,12 +84,12 @@ class PokemonRepositoryTest {
     @Test
     fun `update summaries emits a success on successful api`() = runTest {
         coEvery { pokeService.getAllOneFiftyOne() } returns(
-            Response.success(AllPokemonResult(count = 0, results = emptyList()))
+            Response.success(AllPokemonResult(count = 1, results = listOf(aPokemon)))
         )
         underTest.pokemonSummaries.test {
             underTest.updateSummaries()
             Assert.assertEquals(
-                PokemonSummaryResult.Success(emptyList()),
+                PokemonSummaryResult.Success(listOf(aDomainPokemon)),
                 awaitItem()
             )
             cancelAndIgnoreRemainingEvents()
