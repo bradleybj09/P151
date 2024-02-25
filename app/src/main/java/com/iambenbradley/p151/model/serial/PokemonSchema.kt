@@ -39,7 +39,7 @@ data class SpeciesDetail(
     val evolvesFromSpecies: SpeciesReference?,
     @SerialName("flavor_text_entries")
     val flavorTextEntries: List<FlavorText>,
-    val habitat: Habitat,
+    val habitat: Habitat? = null,
     @SerialName("is_legendary")
     val isLegendary: Boolean,
 )
@@ -64,6 +64,18 @@ data class SerialVersion(
 
 @Serializable
 data class Sprites(
+    @SerialName("front_default")
+    val frontDefault: String,
+    val other: OtherSprites,
+)
+
+@Serializable
+data class OtherSprites(
+    val home: HomeSprites,
+)
+
+@Serializable
+data class HomeSprites(
     @SerialName("front_default")
     val frontDefault: String,
 )

@@ -13,6 +13,7 @@ dagger = "2.48"
 androidx-hilt = "1.1.0"
 retrofit = "2.9.0"
 coroutines = "1.6.4"
+coil = "2.6.0"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -45,6 +46,7 @@ retrofit-kotlinx-serialization = "com.jakewharton.retrofit:retrofit2-kotlinx-ser
 kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 kotlinx-serialization-json = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1"
+coil = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "agp" }

@@ -21,7 +21,7 @@ interface PokemonDetail {
     val relatedPokemon: List<PokemonSummary>
     val evolvesFrom: PokemonSummary?
     val flavorText: Map<PokeVersion, String>
-    val habitat: String
+    val habitat: String?
     val isLegendary: Boolean
     val types: Set<Type>
 }

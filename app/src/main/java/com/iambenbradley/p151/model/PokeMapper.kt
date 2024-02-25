@@ -49,12 +49,14 @@ class PokeMapper @Inject constructor() {
         return PokemonDetailImpl(
             id = pokemon.id,
             name = pokemon.name,
-            sprite = pokemon.sprites.frontDefault,
+            sprite = pokemon.sprites.other.home.frontDefault,
             color = serialToDomainColor(species.color),
-            relatedPokemon = getRelatedPokemonFromChain(evolutionChain.chain),
+            relatedPokemon = getRelatedPokemonFromChain(evolutionChain.chain).filter {
+                it.id != pokemon.id && it.id <= 151 // I'm looking at you, Eevee gen2 evolutions
+            },
             evolvesFrom = speciesReferenceToPokemonSummary(species.evolvesFromSpecies),
             flavorText = getFlavorTextFromSpecies(species.flavorTextEntries),
-            habitat = species.habitat.name,
+            habitat = species.habitat?.name,
             isLegendary = species.isLegendary,
             types = pokemon.types.map { serialToDomainType(it) }.toSet()
         )
@@ -98,13 +100,18 @@ class PokeMapper @Inject constructor() {
         return mapOf(
             PokeVersion.Red to flavorTexts.firstOrNull {
                 it.version.name == "red"
-            }?.text.orEmpty(),
+            }?.text.orEmpty().cleanFlavorText(),
             PokeVersion.Blue to flavorTexts.firstOrNull {
                 it.version.name == "blue"
-            }?.text.orEmpty(),
+            }?.text.orEmpty().cleanFlavorText(),
             PokeVersion.Yellow to flavorTexts.firstOrNull {
                 it.version.name == "yellow"
-            }?.text.orEmpty(),
+            }?.text.orEmpty().cleanFlavorText(),
         )
+    }
+
+    private fun String.cleanFlavorText(): String {
+        // weird \f form feed escapes---------------------------------------▼
+        return this.replace("\n", " ").replace("\u000c", " ")
     }
 }

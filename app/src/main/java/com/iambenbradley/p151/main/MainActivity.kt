@@ -102,7 +102,17 @@ class MainActivity : ComponentActivity() {
                                     }
                                 )
                             ) {
-                                DetailScreen()
+                                DetailScreen(
+                                    onRelatedPokemonClick = { id, name ->
+                                        navController.navigate("detail/$id/$name")
+                                    },
+                                    onBackButtonClick = {
+                                        navController.popBackStack(
+                                            route = "list",
+                                            inclusive = false
+                                        )
+                                    }
+                                )
                             }
                         }
                     }
