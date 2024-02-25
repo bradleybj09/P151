@@ -19,11 +19,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.iambenbradley.p151.R
-import com.iambenbradley.p151.data.prefs.UserPreferencesRepository
 import com.iambenbradley.p151.ui.detail.DetailScreen
 import com.iambenbradley.p151.ui.list.ListScreen
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -33,7 +30,9 @@ fun MainContent(
 ) {
     val navController = rememberNavController()
 
-    Column {
+    Column(
+        modifier = modifier
+    ) {
         Image(
             painter = painterResource(id = R.drawable.pokemon_logo),
             contentDescription = "Pokemon",
