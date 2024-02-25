@@ -1,11 +1,9 @@
 package com.iambenbradley.p151.repository
 
-import android.util.Log
 import com.iambenbradley.p151.data.api.PokeService
 import com.iambenbradley.p151.model.PokeMapper
 import com.iambenbradley.p151.model.result.PokemonDetailResult
 import com.iambenbradley.p151.model.result.PokemonSummaryResult
-import com.iambenbradley.p151.util.ApplicationProcessScope
 import com.iambenbradley.p151.util.DefaultDispatcher
 import com.iambenbradley.p151.util.IoDispatcher
 import com.iambenbradley.p151.util.getPokemonId
@@ -14,12 +12,10 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -34,7 +30,7 @@ interface PokemonRepositoryBindingModule {
 }
 
 interface PokemonRepository {
-    fun updateSummaries()
+    suspend fun updateSummaries()
     val pokemonSummaries: Flow<PokemonSummaryResult>
     fun getPokemonDetail(id: Long): Flow<PokemonDetailResult>
 }
@@ -44,19 +40,14 @@ class PokemonRepositoryImpl @Inject constructor(
     private val pokeService: PokeService,
     @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
-    @ApplicationProcessScope private val coroutineScope: CoroutineScope,
 ) : PokemonRepository {
 
     private val _summaries = MutableSharedFlow<PokemonSummaryResult>(
         replay = 1,
     )
 
-    init {
-        updateSummaries()
-    }
-
-    override fun updateSummaries() {
-        coroutineScope.launch(ioDispatcher) {
+    override suspend fun updateSummaries() {
+        withContext(ioDispatcher) {
             _summaries.emit(
                 pokeService.getAllOneFiftyOne().let { response ->
                     if (response.isSuccessful) {

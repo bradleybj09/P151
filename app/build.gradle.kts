@@ -68,6 +68,11 @@ dependencies {
     implementation(libs.retrofit.kotlinx.serialization)
     implementation(libs.androidx.datastore)
 
+    testImplementation(libs.turbine)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockK)
+    androidTestImplementation(libs.turbine)
+
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.activity.compose)

@@ -14,6 +14,8 @@ androidx-hilt = "1.1.0"
 retrofit = "2.9.0"
 coroutines = "1.6.4"
 coil = "2.6.0"
+turbine = "1.0.0"
+mockK = "1.13.9"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -47,6 +49,8 @@ kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core",
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 kotlinx-serialization-json = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1"
 coil = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
+turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
+mockK = { module = "io.mockk:mockk", version.ref = "mockK" }
 
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "agp" }

@@ -10,6 +10,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import javax.inject.Inject
 
@@ -18,6 +19,13 @@ class ListViewModel @Inject constructor(
     repository: PokemonRepository,
     @DefaultDispatcher defaultDispatcher: CoroutineDispatcher,
 ): ViewModel() {
+
+    init {
+        viewModelScope.launch {
+            // don't bother with scope here, this is main safe
+            repository.updateSummaries()
+        }
+    }
 
     val pokemon: StateFlow<PokemonSummaryResult> = repository.pokemonSummaries.stateIn(
         viewModelScope + defaultDispatcher,

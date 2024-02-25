@@ -33,8 +33,10 @@ class DetailViewModel @Inject constructor(
     @OptIn(ExperimentalCoroutinesApi::class)
     val currentPokemon: StateFlow<PokemonDetailResult> = pokemonId.flatMapLatest { id ->
         if (id == null) {
+            println("get pokemon null")
             flowOf(PokemonDetailResult.Loading)
         } else {
+            println("get pokemon $id")
             repository.getPokemonDetail(id)
         }
     }

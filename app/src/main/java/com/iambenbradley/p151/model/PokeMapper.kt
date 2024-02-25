@@ -1,6 +1,5 @@
 package com.iambenbradley.p151.model
 
-import android.util.Log
 import com.iambenbradley.p151.model.domain.PokeColor
 import com.iambenbradley.p151.model.domain.PokeVersion
 import com.iambenbradley.p151.model.domain.Type
@@ -18,16 +17,19 @@ import com.iambenbradley.p151.model.serial.SerialType
 import com.iambenbradley.p151.model.serial.SpeciesDetail
 import com.iambenbradley.p151.model.serial.SpeciesReference
 import com.iambenbradley.p151.util.getPokemonId
+import org.jetbrains.annotations.VisibleForTesting
 import javax.inject.Inject
 
 class PokeMapper @Inject constructor() {
 
-    private fun serialToDomainColor(serial: SerialColor): PokeColor {
+    @VisibleForTesting
+    fun serialToDomainColor(serial: SerialColor): PokeColor {
         return PokeColor.values().firstOrNull { color ->
             color.serialName == serial.name
         } ?: PokeColor.Unknown
     }
 
+    @VisibleForTesting
     fun serialToDomainType(serial: SerialType): Type {
         return Type.values().firstOrNull { type ->
             type.serialName == serial.type.name
@@ -62,7 +64,8 @@ class PokeMapper @Inject constructor() {
         )
     }
 
-    private fun getRelatedPokemonFromChain(
+    @VisibleForTesting
+    fun getRelatedPokemonFromChain(
         evolutionChain: EvolutionChainInnerData,
     ): List<PokemonSummary> {
         // and there I was, telling people "I am never going to write a recursive function in
@@ -79,7 +82,8 @@ class PokeMapper @Inject constructor() {
         }
     }
 
-    private fun speciesReferenceToPokemonSummary(
+    @VisibleForTesting
+    fun speciesReferenceToPokemonSummary(
         speciesReference: SpeciesReference?
     ): PokemonSummary? {
         return if (speciesReference == null) {
@@ -96,7 +100,8 @@ class PokeMapper @Inject constructor() {
         }
     }
 
-    private fun getFlavorTextFromSpecies(flavorTexts: List<FlavorText>): Map<PokeVersion, String> {
+    @VisibleForTesting
+    fun getFlavorTextFromSpecies(flavorTexts: List<FlavorText>): Map<PokeVersion, String> {
         return mapOf(
             PokeVersion.Red to flavorTexts.firstOrNull {
                 it.version.name == "red"
@@ -110,7 +115,8 @@ class PokeMapper @Inject constructor() {
         )
     }
 
-    private fun String.cleanFlavorText(): String {
+    @VisibleForTesting
+    fun String.cleanFlavorText(): String {
         // weird \f form feed escapes---------------------------------------▼
         return this.replace("\n", " ").replace("\u000c", " ")
     }
