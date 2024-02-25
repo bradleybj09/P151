@@ -141,13 +141,12 @@ class PokeMapperTest {
                     species = SpeciesReference("3","/3/"),
                 )
             ),
-            species = SpeciesReference("4","/4/"),
+            species = SpeciesReference("4",""),
         )
         val expected = listOf(
             PokemonSummaryImpl(1, "1"),
             PokemonSummaryImpl(2, "2"),
             PokemonSummaryImpl(3, "3"),
-            PokemonSummaryImpl(4, "4"),
         )
         Assert.assertEquals(
             "EvolutionChain parsing failed to find related pokemon",
