@@ -14,6 +14,7 @@ However, the technical design and implementation differs little from what I woul
   want to make 454 api calls just to initialize the app. However, I'm putting a 'feature not a bug' spin on this; I've modeled
   the list ui after the original pokedex in the show (if my memory isn't failing), which had a pokeball on each entry.
 - I didn't do any animation.
+- I didn't use string resources or defined dimensions. I would definitely do this in a real situation.
 
 Some fun notes!
 - Long press the pokemon logo at the top to change your game version. I thought it was a fun way to integrate a CompositionLocal
