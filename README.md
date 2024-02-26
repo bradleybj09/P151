@@ -15,6 +15,8 @@ However, the technical design and implementation differs little from what I woul
   the list ui after the original pokedex in the show (if my memory isn't failing), which had a pokeball on each entry.
 - I didn't do any animation.
 - I didn't use string resources or defined dimensions. I would definitely do this in a real situation.
+- My network handling is pretty fast and dirty. It shouldn't crash on no internet or timeouts, but it's not the best UX, nor the
+- cleanest implementation.
 
 Some fun notes!
 - Long press the pokemon logo at the top to change your game version. I thought it was a fun way to integrate a CompositionLocal
