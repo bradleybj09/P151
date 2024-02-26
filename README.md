@@ -9,7 +9,8 @@ However, the technical design and implementation aligns closely with what I woul
 - There's no local storage. I just didn't think it was worth the implementation here. That means that each call to each detail
   page calls the relevant endpoints, and that the results are not cached.
 - In a big app, we'd go multi-module. But I didn't think that was a good use of time on this.
-- There are some hacks to get around the api limitations, but nothing too bad. I make some assumptions about the data.
+- There are some hacks to get around the api limitations, but nothing too bad. I make some assumptions about the data, e.g.
+  putting a limit of 151 on the list call.
 - On the list, there is simply a pokeball for each entry. The api does not include any imagery in the list calls, and I didn't
   want to make 454 api calls just to initialize the app. However, I'm putting a 'feature not a bug' spin on this; I've modeled
   the list ui after the original pokedex in the show (if my memory isn't failing), which had a pokeball on each entry.
