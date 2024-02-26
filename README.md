@@ -4,7 +4,7 @@ I've configured the release variant to just use debug signing in the app/build.g
 Compose performance is massively improved when you can disable minification, disable the debuggable flag, and use proguard.
 
 This is a silly API and the functionality is simple and I hope that the content will get a smile.
-However, the technical design and implementation differs little from what I would use for a large commercial application.
+However, the technical design and implementation aligns closely with what I would use for a large commercial application.
 ...with a few caveats:
 - There's no local storage. I just didn't think it was worth the implementation here. That means that each call to each detail
   page calls the relevant endpoints, and that the results are not cached.
