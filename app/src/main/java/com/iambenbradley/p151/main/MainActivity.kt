@@ -14,22 +14,24 @@ import com.iambenbradley.p151.ui.MainContent
 import com.iambenbradley.p151.ui.theme.P151Theme
 import com.iambenbradley.p151.util.IoDispatcher
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     @Inject lateinit var userPrefsRepository: UserPreferencesRepository
-    @Inject @IoDispatcher lateinit var ioDispatcher: CoroutineDispatcher
+
+    @Inject @IoDispatcher
+    lateinit var ioDispatcher: CoroutineDispatcher
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             val userTypePreference by userPrefsRepository.observe(
-                UserPreferencesRepository.ColorPreferenceKey
+                UserPreferencesRepository.ColorPreferenceKey,
             ).collectAsState(initial = "Other")
             val userType = PokeVersion.valueOf(userTypePreference ?: "Yellow")
             CompositionLocalProvider(LocalUserTypePreference provides(userType)) {
@@ -42,7 +44,7 @@ class MainActivity : ComponentActivity() {
                                     userType.next().name,
                                 )
                             }
-                        }
+                        },
                     )
                 }
             }

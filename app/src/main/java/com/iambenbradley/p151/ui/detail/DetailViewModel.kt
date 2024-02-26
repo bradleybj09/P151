@@ -9,6 +9,7 @@ import com.iambenbradley.p151.model.result.PokemonDetailResult
 import com.iambenbradley.p151.repository.PokemonRepository
 import com.iambenbradley.p151.util.DefaultDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
@@ -18,7 +19,6 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.plus
-import javax.inject.Inject
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
@@ -44,5 +44,4 @@ class DetailViewModel @Inject constructor(
             started = SharingStarted.Lazily,
             initialValue = PokemonDetailResult.Loading,
         )
-
 }

@@ -85,12 +85,12 @@ class PokemonRepositoryTest {
     fun `update summaries emits a success on successful api`() = runTest {
         coEvery { pokeService.getAllOneFiftyOne() } returns(
             Response.success(AllPokemonResult(count = 1, results = listOf(aPokemon)))
-        )
+            )
         underTest.pokemonSummaries.test {
             underTest.updateSummaries()
             Assert.assertEquals(
                 PokemonSummaryResult.Success(listOf(aDomainPokemon)),
-                awaitItem()
+                awaitItem(),
             )
             cancelAndIgnoreRemainingEvents()
         }
@@ -100,12 +100,12 @@ class PokemonRepositoryTest {
     fun `update summaries emits a failure on unsuccessful api`() = runTest {
         coEvery { pokeService.getAllOneFiftyOne() } returns(
             Response.error(404, responseErrorBody)
-        )
+            )
         underTest.pokemonSummaries.test {
             underTest.updateSummaries()
             Assert.assertEquals(
                 PokemonSummaryResult.Failure,
-                awaitItem()
+                awaitItem(),
             )
             cancelAndIgnoreRemainingEvents()
         }
@@ -115,54 +115,54 @@ class PokemonRepositoryTest {
     fun `getPokemonDetail emits failure on any failed call`() = runTest {
         coEvery { pokeService.getSpecies(any()) } returns(
             Response.success(species)
-        )
+            )
         coEvery { pokeService.getEvolutionChain(any()) } returns(
             Response.success(evoChain)
-        )
+            )
         coEvery { pokeService.getPokemon(any()) } returns(
             Response.error(404, responseErrorBody)
-        )
+            )
         underTest.getPokemonDetail(0).test {
             Assert.assertEquals(
                 "getDetail succeeded despite failing pokemon",
                 PokemonDetailResult.Failure,
-                awaitItem()
+                awaitItem(),
             )
             cancelAndIgnoreRemainingEvents()
         }
 
         coEvery { pokeService.getSpecies(any()) } returns(
             Response.error(404, responseErrorBody)
-        )
+            )
         coEvery { pokeService.getEvolutionChain(any()) } returns(
             Response.success(evoChain)
-        )
+            )
         coEvery { pokeService.getPokemon(any()) } returns(
             Response.success(pokemonDetail)
-        )
+            )
         underTest.getPokemonDetail(0).test {
             Assert.assertEquals(
                 "getDetail succeeded despite failing species",
                 PokemonDetailResult.Failure,
-                awaitItem()
+                awaitItem(),
             )
             cancelAndIgnoreRemainingEvents()
         }
 
         coEvery { pokeService.getSpecies(any()) } returns(
             Response.success(species)
-        )
+            )
         coEvery { pokeService.getEvolutionChain(any()) } returns(
             Response.error(404, responseErrorBody)
-        )
+            )
         coEvery { pokeService.getPokemon(any()) } returns(
             Response.success(pokemonDetail)
-        )
+            )
         underTest.getPokemonDetail(0).test {
             Assert.assertEquals(
                 "getDetail succeeded despite failing evoChain",
                 PokemonDetailResult.Failure,
-                awaitItem()
+                awaitItem(),
             )
             cancelAndIgnoreRemainingEvents()
         }
@@ -181,11 +181,11 @@ class PokemonRepositoryTest {
             )
         coEvery { pokeMapper.constructPokeData(any(), any(), any()) } returns(
             domainPokemonDetail
-        )
+            )
         underTest.getPokemonDetail(0).test {
             Assert.assertEquals(
                 PokemonDetailResult.Success(domainPokemonDetail),
-                awaitItem()
+                awaitItem(),
             )
             cancelAndIgnoreRemainingEvents()
         }

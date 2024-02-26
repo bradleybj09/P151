@@ -15,12 +15,12 @@ fun LoadingScreen(
 ) {
     Box(
         modifier = modifier
-            .fillMaxSize()
+            .fillMaxSize(),
     ) {
         CircularProgressIndicator(
             modifier = Modifier
                 .align(Alignment.Center)
-                .semantics { testTag = "Loading" }
+                .semantics { testTag = "Loading" },
         )
     }
 }

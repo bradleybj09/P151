@@ -1,18 +1,16 @@
 package com.iambenbradley.p151
 
-import app.cash.turbine.test
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStoreFile
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import app.cash.turbine.test
 import com.iambenbradley.p151.data.prefs.DataStoreUserPreferencesRepository
 import com.iambenbradley.p151.data.prefs.UserPreferencesRepository
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 
 class UserPrefsRepositoryTest {
 
@@ -37,12 +35,12 @@ class UserPrefsRepositoryTest {
         underTest.observe(testKey).test {
             Assert.assertEquals(
                 null,
-                awaitItem()
+                awaitItem(),
             )
             underTest.setPreference(testKey, "test")
             Assert.assertEquals(
                 "test",
-                awaitItem()
+                awaitItem(),
             )
         }
     }

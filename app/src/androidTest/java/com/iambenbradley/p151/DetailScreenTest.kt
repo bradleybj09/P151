@@ -1,6 +1,5 @@
 package com.iambenbradley.p151
 
-import androidx.annotation.UiThread
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
@@ -34,7 +33,7 @@ class DetailScreenTest {
     private val testDispatcher = StandardTestDispatcher()
 
     private val pokemon = PokemonDetailImpl(
-        0, "", "", PokeColor.Red, emptyList(), null, emptyMap(), null, false, emptySet()
+        0, "", "", PokeColor.Red, emptyList(), null, emptyMap(), null, false, emptySet(),
     )
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -44,7 +43,7 @@ class DetailScreenTest {
         MockKAnnotations.init(this)
         coEvery { viewModel.pokemonName } returns(
             MutableStateFlow("Pokemon!")
-        )
+            )
         coEvery { viewModel.pokemonId } answers {
             MutableStateFlow(0L)
         }
@@ -54,13 +53,13 @@ class DetailScreenTest {
     fun viewModelLoadingStateShowsLoadingScreen() = runTest {
         coEvery { viewModel.currentPokemon } returns(
             MutableStateFlow(PokemonDetailResult.Loading)
-        )
+            )
 
         composeTestRule.setContent {
             DetailScreen(
                 onRelatedPokemonClick = { _, _ -> },
                 onBackButtonClick = {},
-                viewModel = viewModel
+                viewModel = viewModel,
             )
         }
 
@@ -71,19 +70,18 @@ class DetailScreenTest {
     fun viewModelFailedStateShowsFailureScreen() = runTest {
         coEvery { viewModel.currentPokemon } returns(
             MutableStateFlow(PokemonDetailResult.Failure)
-        )
+            )
 
         composeTestRule.setContent {
             DetailScreen(
                 onRelatedPokemonClick = { _, _ -> },
                 onBackButtonClick = {},
-                viewModel = viewModel
+                viewModel = viewModel,
             )
         }
 
         composeTestRule.onNodeWithTag("Failure").assertIsDisplayed()
     }
-
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
@@ -91,13 +89,13 @@ class DetailScreenTest {
         Dispatchers.resetMain() // COIL!!
         coEvery { viewModel.currentPokemon } returns(
             MutableStateFlow(PokemonDetailResult.Success(pokemon))
-        )
+            )
 
         composeTestRule.setContent {
             DetailScreen(
                 onRelatedPokemonClick = { _, _ -> },
                 onBackButtonClick = {},
-                viewModel = viewModel
+                viewModel = viewModel,
             )
         }
 

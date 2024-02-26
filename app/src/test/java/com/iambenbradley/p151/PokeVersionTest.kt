@@ -8,30 +8,29 @@ class PokeVersionTest {
 
     @Test
     fun `pokeVersion rotation follows red to blue to yellow`() {
-
         var pokeVersion = PokeVersion.Other
 
         Assert.assertEquals(
             PokeVersion.Red,
-            pokeVersion.next()
+            pokeVersion.next(),
         )
 
         pokeVersion = PokeVersion.Red
         Assert.assertEquals(
             PokeVersion.Blue,
-            pokeVersion.next()
+            pokeVersion.next(),
         )
 
         pokeVersion = PokeVersion.Blue
         Assert.assertEquals(
             PokeVersion.Yellow,
-            pokeVersion.next()
+            pokeVersion.next(),
         )
 
         pokeVersion = PokeVersion.Yellow
         Assert.assertEquals(
             PokeVersion.Red,
-            pokeVersion.next()
+            pokeVersion.next(),
         )
     }
 }

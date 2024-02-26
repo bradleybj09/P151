@@ -27,7 +27,7 @@ class DetailViewModelTest {
     private val pokemonDetail = PokemonDetailImpl(
         id = 1, name = "1", sprite = "", color = PokeColor.Red, relatedPokemon = emptyList(),
         evolvesFrom = null, flavorText = emptyMap(), habitat = null, isLegendary = false,
-        types = emptySet()
+        types = emptySet(),
     )
 
     private val pokemonRepository = object : PokemonRepository {
@@ -41,7 +41,6 @@ class DetailViewModelTest {
         override fun getPokemonDetail(id: Long): Flow<PokemonDetailResult> {
             return flowOf(PokemonDetailResult.Success(pokemonDetail))
         }
-
     }
 
     private val savedStateHandle = SavedStateHandle()
@@ -64,11 +63,11 @@ class DetailViewModelTest {
             savedStateHandle[pokemonNameArg] = ""
             Assert.assertEquals(
                 PokemonDetailResult.Loading,
-                awaitItem()
+                awaitItem(),
             )
             Assert.assertEquals(
                 PokemonDetailResult.Success(pokemonDetail),
-                awaitItem()
+                awaitItem(),
             )
             cancelAndIgnoreRemainingEvents()
         }

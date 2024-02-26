@@ -2,11 +2,11 @@ package com.iambenbradley.p151.model
 
 import com.iambenbradley.p151.model.domain.PokeColor
 import com.iambenbradley.p151.model.domain.PokeVersion
-import com.iambenbradley.p151.model.domain.Type
 import com.iambenbradley.p151.model.domain.PokemonDetail
 import com.iambenbradley.p151.model.domain.PokemonDetailImpl
 import com.iambenbradley.p151.model.domain.PokemonSummary
 import com.iambenbradley.p151.model.domain.PokemonSummaryImpl
+import com.iambenbradley.p151.model.domain.Type
 import com.iambenbradley.p151.model.serial.EvolutionChain
 import com.iambenbradley.p151.model.serial.EvolutionChainInnerData
 import com.iambenbradley.p151.model.serial.FlavorText
@@ -17,8 +17,8 @@ import com.iambenbradley.p151.model.serial.SerialType
 import com.iambenbradley.p151.model.serial.SpeciesDetail
 import com.iambenbradley.p151.model.serial.SpeciesReference
 import com.iambenbradley.p151.util.getPokemonId
-import org.jetbrains.annotations.VisibleForTesting
 import javax.inject.Inject
+import org.jetbrains.annotations.VisibleForTesting
 
 class PokeMapper @Inject constructor() {
 
@@ -61,7 +61,7 @@ class PokeMapper @Inject constructor() {
             flavorText = getFlavorTextFromSpecies(species.flavorTextEntries),
             habitat = species.habitat?.name,
             isLegendary = species.isLegendary,
-            types = pokemon.types.map { serialToDomainType(it) }.toSet()
+            types = pokemon.types.map { serialToDomainType(it) }.toSet(),
         )
     }
 
@@ -83,7 +83,7 @@ class PokeMapper @Inject constructor() {
 
     @VisibleForTesting
     fun speciesReferenceToPokemonSummary(
-        speciesReference: SpeciesReference?
+        speciesReference: SpeciesReference?,
     ): PokemonSummary? {
         return if (speciesReference == null) {
             null
@@ -91,11 +91,11 @@ class PokeMapper @Inject constructor() {
             speciesReference
                 .url.getPokemonId()
                 ?.let { id ->
-                PokemonSummaryImpl(
-                    name = speciesReference.name,
-                    id = id
-                )
-            }
+                    PokemonSummaryImpl(
+                        name = speciesReference.name,
+                        id = id,
+                    )
+                }
         }
     }
 

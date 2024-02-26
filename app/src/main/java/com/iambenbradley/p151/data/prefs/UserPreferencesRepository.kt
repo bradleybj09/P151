@@ -8,10 +8,10 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -19,7 +19,9 @@ interface UserPreferencesBindingModule {
 
     @Binds
     @Singleton
-    fun bindUserPreferencesRepository(impl: DataStoreUserPreferencesRepository): UserPreferencesRepository
+    fun bindUserPreferencesRepository(
+        impl: DataStoreUserPreferencesRepository,
+    ): UserPreferencesRepository
 }
 
 /**

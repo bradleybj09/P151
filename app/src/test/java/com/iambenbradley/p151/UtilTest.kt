@@ -33,7 +33,7 @@ class UtilTest {
 
         Assert.assertEquals(
             expected,
-            versions.map { it.toBackgroundColor() }
+            versions.map { it.toBackgroundColor() },
         )
     }
 }

@@ -11,14 +11,14 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -69,16 +69,15 @@ class PokemonRepositoryImpl @Inject constructor(
                             PokemonSummaryResult.Success(
                                 summaries = response.body()?.results?.map {
                                     pokeMapper.serialToDomainSummary(it)
-                                } ?: emptyList()
+                                } ?: emptyList(),
                             )
                         }
                     } else {
                         PokemonSummaryResult.Failure
                     }
-                }
+                },
             )
         }
-
     }
 
     override val pokemonSummaries: Flow<PokemonSummaryResult> = _summaries

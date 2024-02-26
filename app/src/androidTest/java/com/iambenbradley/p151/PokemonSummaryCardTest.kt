@@ -33,7 +33,7 @@ class PokemonSummaryCardTest {
                 id = 1,
                 onClick = { _, _ -> },
                 useBackButton = true,
-                onBackButtonClick = onClick
+                onBackButtonClick = onClick,
             )
         }
 
@@ -50,7 +50,7 @@ class PokemonSummaryCardTest {
                 id = 1,
                 onClick = { _, _ -> },
                 useBackButton = false,
-                onBackButtonClick = onClick
+                onBackButtonClick = onClick,
             )
         }
 

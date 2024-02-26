@@ -27,7 +27,6 @@ class ListViewModelTest {
         override fun getPokemonDetail(id: Long): Flow<PokemonDetailResult> {
             TODO("Not yet implemented")
         }
-
     }
 
     private val testDispatcher = StandardTestDispatcher()
@@ -49,14 +48,13 @@ class ListViewModelTest {
         underTest.pokemon.test {
             Assert.assertEquals(
                 PokemonSummaryResult.Loading,
-                awaitItem()
+                awaitItem(),
             )
             Assert.assertEquals(
                 PokemonSummaryResult.Failure,
-                awaitItem()
+                awaitItem(),
             )
             cancelAndIgnoreRemainingEvents()
         }
-
     }
 }

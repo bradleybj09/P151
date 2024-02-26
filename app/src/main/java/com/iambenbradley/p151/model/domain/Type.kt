@@ -21,6 +21,4 @@ enum class Type(val serialName: String) {
     Fairy("fairy"),
     Unknown("unknown"),
     Shadow("shadow"),
-
-
 }

@@ -30,10 +30,10 @@ import com.iambenbradley.p151.ui.list.ListScreen
 fun MainContent(
     onLogoLongClick: () -> Unit,
     modifier: Modifier = Modifier,
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberNavController(),
 ) {
     Column(
-        modifier = modifier
+        modifier = modifier,
     ) {
         Image(
             painter = painterResource(id = R.drawable.pokemon_logo),
@@ -42,12 +42,12 @@ fun MainContent(
                 .combinedClickable(
                     onClick = {},
                     onLongClick = onLogoLongClick,
-                    onLongClickLabel = "Change Version"
+                    onLongClickLabel = "Change Version",
                 )
                 .height(76.dp)
                 .background(color = MaterialTheme.colorScheme.primary)
                 .padding(8.dp)
-                .fillMaxWidth()
+                .fillMaxWidth(),
         )
         NavHost(
             navController = navController,
@@ -65,8 +65,8 @@ fun MainContent(
                 arguments = listOf(
                     navArgument("pokemonId") {
                         type = NavType.LongType
-                    }
-                )
+                    },
+                ),
             ) {
                 DetailScreen(
                     onRelatedPokemonClick = { id, name ->
@@ -75,9 +75,9 @@ fun MainContent(
                     onBackButtonClick = {
                         navController.popBackStack(
                             route = "list",
-                            inclusive = false
+                            inclusive = false,
                         )
-                    }
+                    },
                 )
             }
         }

@@ -12,6 +12,6 @@ sealed interface PokemonSummaryResult {
     data object Loading : PokemonSummaryResult
     data object Failure : PokemonSummaryResult
     data class Success(
-        val summaries: List<PokemonSummary>
+        val summaries: List<PokemonSummary>,
     ) : PokemonSummaryResult
 }

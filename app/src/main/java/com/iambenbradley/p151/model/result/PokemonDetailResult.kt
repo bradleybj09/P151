@@ -12,6 +12,6 @@ sealed interface PokemonDetailResult {
     data object Loading : PokemonDetailResult
     data object Failure : PokemonDetailResult
     data class Success(
-        val detail: PokemonDetail
+        val detail: PokemonDetail,
     ) : PokemonDetailResult
 }

@@ -36,15 +36,15 @@ fun PokemonSummaryCard(
     Card(
         shape = RoundedCornerShape(4.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color.White
+            containerColor = Color.White,
         ),
         modifier = modifier
             .height(56.dp)
-            .clickable { onClick(id, name) }
+            .clickable { onClick(id, name) },
     ) {
         Row(
             modifier = Modifier.padding(4.dp)
-                .fillMaxHeight()
+                .fillMaxHeight(),
         ) {
             if (useBackButton) {
                 IconButton(
@@ -52,14 +52,13 @@ fun PokemonSummaryCard(
                     modifier = Modifier
                         .weight(1f)
                         .size(24.dp)
-                        .align(Alignment.CenterVertically)
+                        .align(Alignment.CenterVertically),
 
                 ) {
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
                         contentDescription = "back to list",
                     )
-
                 }
             } else {
                 Image(
@@ -67,7 +66,7 @@ fun PokemonSummaryCard(
                     contentDescription = "pokeball",
                     modifier = Modifier
                         .weight(1f)
-                        .size(48.dp)
+                        .size(48.dp),
                 )
             }
             Text(
@@ -75,14 +74,14 @@ fun PokemonSummaryCard(
                 textAlign = TextAlign.Start,
                 modifier = Modifier
                     .weight(1f)
-                    .align(Alignment.CenterVertically)
+                    .align(Alignment.CenterVertically),
             )
             Text(
                 text = name.uppercase(),
                 textAlign = TextAlign.Start,
                 modifier = Modifier
                     .weight(2f)
-                    .align(Alignment.CenterVertically)
+                    .align(Alignment.CenterVertically),
             )
         }
     }

@@ -97,7 +97,6 @@ data class EvolutionChainInnerData(
     val species: SpeciesReference,
 )
 
-
 @Serializable
 data class SerialColor(
     val name: String,

@@ -16,13 +16,12 @@ fun FailureScreen(
 ) {
     Box(
         modifier = modifier
-            .fillMaxSize()
+            .fillMaxSize(),
     ) {
         Text(
             text = text,
             modifier = Modifier.align(Alignment.Center)
-                .semantics { testTag = "Failure" }
+                .semantics { testTag = "Failure" },
         )
     }
-
 }

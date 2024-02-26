@@ -41,12 +41,12 @@ class ListScreenTest {
     fun viewModelLoadingStateShowsLoadingScreen() = runTest {
         coEvery { viewModel.pokemon } returns(
             MutableStateFlow(PokemonSummaryResult.Loading)
-        )
+            )
 
         composeTestRule.setContent {
             ListScreen(
                 onClickPokemon = { _, _ -> },
-                viewModel = viewModel
+                viewModel = viewModel,
             )
         }
 
@@ -57,35 +57,33 @@ class ListScreenTest {
     fun viewModelFailedStateShowsFailureScreen() = runTest {
         coEvery { viewModel.pokemon } returns(
             MutableStateFlow(PokemonSummaryResult.Failure)
-        )
+            )
 
         composeTestRule.setContent {
             ListScreen(
                 onClickPokemon = { _, _ -> },
-                viewModel = viewModel
+                viewModel = viewModel,
             )
         }
 
         composeTestRule.onNodeWithTag("Failure").assertIsDisplayed()
     }
 
-
     @Test
     fun viewModelSuccessStateShowsListScreen() = runTest {
         coEvery { viewModel.pokemon } returns(
             MutableStateFlow(
-                PokemonSummaryResult.Success(listOf(PokemonSummaryImpl(0, "Pokemon!")))
+                PokemonSummaryResult.Success(listOf(PokemonSummaryImpl(0, "Pokemon!"))),
             )
-        )
+            )
 
         composeTestRule.setContent {
             ListScreen(
                 onClickPokemon = { _, _ -> },
-                viewModel = viewModel
+                viewModel = viewModel,
             )
         }
 
         composeTestRule.onNodeWithTag("PokeList").assertIsDisplayed()
     }
-
 }

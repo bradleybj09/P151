@@ -16,7 +16,7 @@ coroutines = "1.6.4"
 coil = "2.6.0"
 turbine = "1.0.0"
 mockk = "1.13.9"
-ktlint = "12.1.0"
+ktlint = "11.4.0"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }

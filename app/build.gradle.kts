@@ -8,6 +8,11 @@ plugins {
     alias(libs.plugins.ktlint)
 }
 
+ktlint {
+    android.set(true)
+    verbose.set(true)
+}
+
 android {
     namespace = "com.iambenbradley.p151"
     compileSdk = 34
@@ -30,7 +35,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }

@@ -34,7 +34,7 @@ fun ListScreen(
     when (val state = pokemonState) {
         PokemonSummaryResult.Failure -> FailureScreen(
             text = "We had trouble finding your pokemon. Make sure you are connected to " +
-                "the internet, or try again later."
+                "the internet, or try again later.",
         )
         PokemonSummaryResult.Loading -> LoadingScreen()
         is PokemonSummaryResult.Success -> {
@@ -44,18 +44,18 @@ fun ListScreen(
                 modifier = modifier
                     .background(color = backgroundColor)
                     .padding(4.dp)
-                    .semantics { testTag = "PokeList" }
+                    .semantics { testTag = "PokeList" },
             ) {
                 items(
                     items = state.summaries,
-                    key = { it.name }
-                ) {pokemon ->
+                    key = { it.name },
+                ) { pokemon ->
                     PokemonSummaryCard(
                         name = pokemon.name,
                         id = pokemon.id,
                         onClick = onClickPokemon,
                         useBackButton = false,
-                        onBackButtonClick = {}
+                        onBackButtonClick = {},
                     )
                 }
             }

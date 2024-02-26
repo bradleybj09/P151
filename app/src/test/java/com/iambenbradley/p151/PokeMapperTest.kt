@@ -36,12 +36,12 @@ class PokeMapperTest {
         Assert.assertEquals(
             "Known color 'red' should map to PokeColor.Red",
             PokeColor.Red,
-            underTest.serialToDomainColor(knownColor)
+            underTest.serialToDomainColor(knownColor),
         )
         Assert.assertEquals(
             "Unknown color 'blargh!' should map to PokeColor.Unknown",
             PokeColor.Unknown,
-            underTest.serialToDomainColor(unknownColor)
+            underTest.serialToDomainColor(unknownColor),
         )
     }
 
@@ -52,12 +52,12 @@ class PokeMapperTest {
         Assert.assertEquals(
             "Known type 'fire' should map to Type.Fire",
             Type.Fire,
-            underTest.serialToDomainType(knownType)
+            underTest.serialToDomainType(knownType),
         )
         Assert.assertEquals(
             "Unknown type 'blargh!' should map to Type.Unknown",
             Type.Unknown,
-            underTest.serialToDomainType(unknownType)
+            underTest.serialToDomainType(unknownType),
         )
     }
 
@@ -65,12 +65,12 @@ class PokeMapperTest {
     fun `summary mapping maps correctly, including extracting pokemon Id`() {
         val serial = SerialSummary(
             name = "charmeleon",
-            url = "https://pokeapi.co/api/v2/pokemon/5/"
+            url = "https://pokeapi.co/api/v2/pokemon/5/",
         )
         Assert.assertEquals(
             "Summary mapping failed name or id conversion",
             PokemonSummaryImpl(5, "charmeleon"),
-            underTest.serialToDomainSummary(serial)
+            underTest.serialToDomainSummary(serial),
         )
     }
 
@@ -78,28 +78,28 @@ class PokeMapperTest {
     fun `species to summary mapping maps correctly, including null to null`() {
         val serial = SpeciesReference(
             name = "charmeleon",
-            url = "https://pokeapi.co/api/v2/pokemon-species/5/"
+            url = "https://pokeapi.co/api/v2/pokemon-species/5/",
         )
         Assert.assertEquals(
             "Species to summary mapping failed name or id conversion",
             PokemonSummaryImpl(5, "charmeleon"),
-            underTest.speciesReferenceToPokemonSummary(serial)
+            underTest.speciesReferenceToPokemonSummary(serial),
         )
         Assert.assertEquals(
             "Species to summary mapping did not handle null correctly",
             null,
-            underTest.speciesReferenceToPokemonSummary(null)
+            underTest.speciesReferenceToPokemonSummary(null),
         )
     }
 
     @Test
     fun `flavor text cleaning correctly removes unwanted escapes`() {
-        val serial = "The flame on its\ntail indicates\nCHARMANDER's life\u000cforce. If it is\nhealthy, the flame\nburns brightly."
-        val expected = "The flame on its tail indicates CHARMANDER's life force. If it is healthy, the flame burns brightly."
+        val serial = "The flame on its\ntail indicates\nCHARMANDER's life\u000cforce."
+        val expected = "The flame on its tail indicates CHARMANDER's life force."
         Assert.assertEquals(
             "Flavor text cleaning did not handle escapes correctly",
             expected,
-            underTest.run { serial.cleanFlavorText() }
+            underTest.run { serial.cleanFlavorText() },
         )
     }
 
@@ -119,7 +119,7 @@ class PokeMapperTest {
         Assert.assertEquals(
             "Flavor text mapping failed to map correct versions",
             expected,
-            underTest.getFlavorTextFromSpecies(serial)
+            underTest.getFlavorTextFromSpecies(serial),
         )
     }
 
@@ -131,17 +131,17 @@ class PokeMapperTest {
                     evolvesTo = listOf(
                         EvolutionChainInnerData(
                             evolvesTo = null,
-                            species = SpeciesReference("1","/1/"),
+                            species = SpeciesReference("1", "/1/"),
                         ),
                     ),
-                    species = SpeciesReference("2","/2/"),
+                    species = SpeciesReference("2", "/2/"),
                 ),
                 EvolutionChainInnerData(
                     evolvesTo = null,
-                    species = SpeciesReference("3","/3/"),
-                )
+                    species = SpeciesReference("3", "/3/"),
+                ),
             ),
-            species = SpeciesReference("4",""),
+            species = SpeciesReference("4", ""),
         )
         val expected = listOf(
             PokemonSummaryImpl(1, "1"),
@@ -151,12 +151,12 @@ class PokeMapperTest {
         Assert.assertEquals(
             "EvolutionChain parsing failed to find related pokemon",
             expected,
-            underTest.getRelatedPokemonFromChain(serial)
+            underTest.getRelatedPokemonFromChain(serial),
         )
     }
 
     @Test
-    fun `pokeData construction correctly maps data, including filtering self and id over 151 from related pokemon`() {
+    fun `pokeData construction correctly maps data, filters self and id over 151 from related`() {
         val evoChain = EvolutionChain(
             EvolutionChainInnerData(
                 evolvesTo = listOf(
@@ -164,37 +164,37 @@ class PokeMapperTest {
                         evolvesTo = listOf(
                             EvolutionChainInnerData(
                                 evolvesTo = null,
-                                species = SpeciesReference("1","/1/"),
+                                species = SpeciesReference("1", "/1/"),
                             ),
                         ),
-                        species = SpeciesReference("2","/2/"),
+                        species = SpeciesReference("2", "/2/"),
                     ),
                     EvolutionChainInnerData(
                         evolvesTo = null,
-                        species = SpeciesReference("3","/3/"),
-                    )
+                        species = SpeciesReference("3", "/3/"),
+                    ),
                 ),
-                species = SpeciesReference("200","/200/"),
-            )
+                species = SpeciesReference("200", "/200/"),
+            ),
         )
         val species = SpeciesReference("1", "/1/")
         val sprites = Sprites(
             frontDefault = "pixelSprite",
             other = OtherSprites(
                 home = HomeSprites(
-                    frontDefault = "homeSprite"
-                )
-            )
+                    frontDefault = "homeSprite",
+                ),
+            ),
         )
         val types = setOf(
-            SerialType(SerialInnerType("fire","")),
+            SerialType(SerialInnerType("fire", "")),
             SerialType(SerialInnerType("flying", "")),
         )
         val pokemon = PokemonDetail(1, "1", species, sprites, types)
         val speciesDetail = SpeciesDetail(
             color = SerialColor("red", ""),
             evolutionChain = EvolutionChainReference(""),
-            evolvesFromSpecies = SpeciesReference("2","/2/"),
+            evolvesFromSpecies = SpeciesReference("2", "/2/"),
             flavorTextEntries = listOf(
                 FlavorText(text = "RedText", version = SerialVersion(name = "red", url = "")),
                 FlavorText(text = "BlueText", version = SerialVersion(name = "blue", url = "")),
@@ -222,7 +222,7 @@ class PokeMapperTest {
             ),
             habitat = "hab",
             isLegendary = true,
-            types = setOf(Type.Fire, Type.Flying)
+            types = setOf(Type.Fire, Type.Flying),
         )
 
         Assert.assertEquals(
@@ -232,7 +232,7 @@ class PokeMapperTest {
                 pokemon = pokemon,
                 species = speciesDetail,
                 evolutionChain = evoChain,
-            )
+            ),
         )
     }
 }
