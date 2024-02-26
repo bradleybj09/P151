@@ -15,11 +15,13 @@ import com.iambenbradley.p151.model.serial.PokemonSummary
 import com.iambenbradley.p151.model.serial.SpeciesDetail
 import com.iambenbradley.p151.repository.PokemonRepository
 import com.iambenbradley.p151.repository.PokemonRepositoryImpl
+import com.iambenbradley.p151.util.NetworkMonitor
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -62,6 +64,9 @@ class PokemonRepositoryTest {
     @MockK
     private lateinit var aDomainPokemon: DomainPokemonSummary
 
+    @MockK
+    private lateinit var networkMonitor: NetworkMonitor
+
     private val responseErrorBody = "{\"thing\":[\"bad\"]}"
         .toResponseBody("application/json".toMediaTypeOrNull())
 
@@ -75,10 +80,12 @@ class PokemonRepositoryTest {
             pokeService = pokeService,
             defaultDispatcher = testDispatcher,
             ioDispatcher = testDispatcher,
+            networkMonitor = networkMonitor,
         )
         coEvery { pokeMapper.serialToDomainSummary(any()) } returns(aDomainPokemon)
         coEvery { species.evolutionChain } returns(evoChainReference)
         coEvery { evoChainReference.url } returns("/0/")
+        coEvery { networkMonitor.networkAvailable } returns(flowOf(true))
     }
 
     @Test

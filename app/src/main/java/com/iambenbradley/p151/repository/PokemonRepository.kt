@@ -6,16 +6,19 @@ import com.iambenbradley.p151.model.result.PokemonDetailResult
 import com.iambenbradley.p151.model.result.PokemonSummaryResult
 import com.iambenbradley.p151.util.DefaultDispatcher
 import com.iambenbradley.p151.util.IoDispatcher
+import com.iambenbradley.p151.util.NetworkMonitor
 import com.iambenbradley.p151.util.getPokemonId
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import java.net.SocketTimeoutException
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
@@ -52,6 +55,7 @@ class PokemonRepositoryImpl @Inject constructor(
     private val pokeService: PokeService,
     @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
+    private val networkMonitor: NetworkMonitor,
 ) : PokemonRepository {
 
     private val _summaries = MutableSharedFlow<PokemonSummaryResult>(
@@ -60,69 +64,98 @@ class PokemonRepositoryImpl @Inject constructor(
 
     override suspend fun updateSummaries() {
         withContext(ioDispatcher) {
-            _summaries.emit(
-                pokeService.getAllOneFiftyOne().let { response ->
-                    if (response.isSuccessful) {
-                        // in such a small thing, it's silly to switch dispatchers here, but in a real
-                        // complex situation with big mapping jobs, you'd do it. So I did it here.
-                        withContext(defaultDispatcher) {
-                            PokemonSummaryResult.Success(
-                                summaries = response.body()?.results?.map {
-                                    pokeMapper.serialToDomainSummary(it)
-                                } ?: emptyList(),
-                            )
-                        }
-                    } else {
-                        PokemonSummaryResult.Failure
-                    }
-                },
-            )
+            if (networkMonitor.networkAvailable.first()) {
+                withTimeoutHandling(
+                    onTimeout = { _summaries.emit(PokemonSummaryResult.Failure) },
+                ) {
+                    _summaries.emit(
+                        pokeService.getAllOneFiftyOne().let { response ->
+                            if (response.isSuccessful) {
+                                // in such a small thing, it's silly to switch dispatchers here, but in a real
+                                // complex situation with big mapping jobs, you'd do it. So I did it here.
+                                withContext(defaultDispatcher) {
+                                    PokemonSummaryResult.Success(
+                                        summaries = response.body()?.results?.map {
+                                            pokeMapper.serialToDomainSummary(it)
+                                        } ?: emptyList(),
+                                    )
+                                }
+                            } else {
+                                PokemonSummaryResult.Failure
+                            }
+                        },
+                    )
+                }
+            } else {
+                _summaries.emit(PokemonSummaryResult.Failure)
+            }
         }
     }
 
     override val pokemonSummaries: Flow<PokemonSummaryResult> = _summaries
 
     override fun getPokemonDetail(id: Long): Flow<PokemonDetailResult> = flow {
-        val pokemon = pokeService.getPokemon(pokemonId = id).let { response ->
-            if (response.isSuccessful) {
-                response.body()!!
-            } else {
-                emit(PokemonDetailResult.Failure)
-                return@flow
-            }
-        }
-
-        val species = pokeService.getSpecies(pokemonId = id).let { response ->
-            if (response.isSuccessful) {
-                response.body()!!
-            } else {
-                emit(PokemonDetailResult.Failure)
-                return@flow
-            }
-        }
-
-        val evolutionChain = species
-            .evolutionChain
-            .url.getPokemonId()
-            ?.let { evolutionChainId ->
-                pokeService.getEvolutionChain(evolutionChainId = evolutionChainId).let { response ->
+        if (networkMonitor.networkAvailable.first()) {
+            withTimeoutHandling(
+                onTimeout = { emit(PokemonDetailResult.Failure) },
+            ) {
+                val pokemon = pokeService.getPokemon(pokemonId = id).let { response ->
                     if (response.isSuccessful) {
                         response.body()!!
                     } else {
                         emit(PokemonDetailResult.Failure)
-                        return@flow
+                        return@withTimeoutHandling
                     }
                 }
-            } ?: run {
-            emit(PokemonDetailResult.Failure)
-            return@flow
-        }
 
-        val pokeData = pokeMapper.constructPokeData(
-            pokemon = pokemon,
-            species = species,
-            evolutionChain = evolutionChain,
-        )
-        emit(PokemonDetailResult.Success(pokeData))
+                val species = pokeService.getSpecies(pokemonId = id).let { response ->
+                    if (response.isSuccessful) {
+                        response.body()!!
+                    } else {
+                        emit(PokemonDetailResult.Failure)
+                        return@withTimeoutHandling
+                    }
+                }
+
+                val evolutionChain = species
+                    .evolutionChain
+                    .url.getPokemonId()
+                    ?.let { evolutionChainId ->
+                        pokeService.getEvolutionChain(
+                            evolutionChainId = evolutionChainId
+                        ).let { response ->
+                            if (response.isSuccessful) {
+                                response.body()!!
+                            } else {
+                                emit(PokemonDetailResult.Failure)
+                                return@withTimeoutHandling
+                            }
+                        }
+                    } ?: run {
+                    emit(PokemonDetailResult.Failure)
+                    return@withTimeoutHandling
+                }
+
+                val pokeData = pokeMapper.constructPokeData(
+                    pokemon = pokemon,
+                    species = species,
+                    evolutionChain = evolutionChain,
+                )
+                emit(PokemonDetailResult.Success(pokeData))
+            }
+        } else {
+            emit(PokemonDetailResult.Failure)
+        }
     }.flowOn(ioDispatcher)
+
+    private suspend fun withTimeoutHandling(
+        onTimeout: suspend () -> Unit,
+        block: suspend () -> Unit,
+    ) {
+        try {
+            block()
+        } catch (e: SocketTimeoutException) {
+            onTimeout()
+        }
+    }
 }
