@@ -1,4 +1,4 @@
-package com.iambenbradley.p151.main
+package com.iambenbradley.p151.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -13,12 +13,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.iambenbradley.p151.R
+import com.iambenbradley.p151.main.pokemonIdArg
+import com.iambenbradley.p151.main.pokemonNameArg
 import com.iambenbradley.p151.ui.detail.DetailScreen
 import com.iambenbradley.p151.ui.list.ListScreen
 
@@ -27,9 +30,8 @@ import com.iambenbradley.p151.ui.list.ListScreen
 fun MainContent(
     onLogoLongClick: () -> Unit,
     modifier: Modifier = Modifier,
+    navController: NavHostController = rememberNavController()
 ) {
-    val navController = rememberNavController()
-
     Column(
         modifier = modifier
     ) {
@@ -80,5 +82,4 @@ fun MainContent(
             }
         }
     }
-
 }

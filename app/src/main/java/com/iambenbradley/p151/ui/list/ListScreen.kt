@@ -10,6 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.iambenbradley.p151.main.LocalUserTypePreference
@@ -42,6 +44,7 @@ fun ListScreen(
                 modifier = modifier
                     .background(color = backgroundColor)
                     .padding(4.dp)
+                    .semantics { testTag = "PokeList" }
             ) {
                 items(
                     items = state.summaries,

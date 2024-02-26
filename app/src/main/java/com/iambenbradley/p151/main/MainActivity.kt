@@ -10,6 +10,7 @@ import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import com.iambenbradley.p151.data.prefs.UserPreferencesRepository
 import com.iambenbradley.p151.model.domain.PokeVersion
+import com.iambenbradley.p151.ui.MainContent
 import com.iambenbradley.p151.ui.theme.P151Theme
 import com.iambenbradley.p151.util.IoDispatcher
 import dagger.hilt.android.AndroidEntryPoint
